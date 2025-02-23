@@ -4,33 +4,22 @@ import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 
 df = pd.read_csv("bloodtypes.csv")
-
 df.fillna(df.mean(numeric_only=True), inplace=True)
 
-# Selecting the feature (Population) and targets (Blood types)
-X_train = df[['Population']]  # Independent variable
+X_train = df[['Population']]
 blood_types = ['O+', 'A+', 'B+', 'AB+', 'O-', 'A-', 'B-', 'AB-']
 
-# Dictionary to store models and predictions
 models = {}
 predictions = {}
 
-# Train Linear Regression for each blood type
 for blood in blood_types:
-    y_train = df[blood]  # Target variable
-    
-    # Train the model
+    y_train = df[blood]
     model = LinearRegression().fit(X_train, y_train)
-    
-    # Store model and predictions
     models[blood] = model
     predictions[blood] = model.predict(X_train)
 
-# Plot actual vs predicted values for each blood type
 fig, axes = plt.subplots(4, 2, figsize=(12, 16))
 fig.suptitle("Linear Regression: Actual vs Predicted Blood Type Percentages", fontsize=14)
-
-# Flatten the axes array for easier indexing
 axes = axes.flatten()
 
 for i, blood in enumerate(blood_types):
